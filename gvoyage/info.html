@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+
+    <title>gvoyage.org</title>
+</head>
+<!--[if lt IE 9]>
+　　
+<script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+　　
+<script src="https://oss.maxcdn.com/libs/respond.js/1.3.0/respond.min.js"></script>
+<![endif]-->
+<link rel="stylesheet" href="css/style.css?v=3">
+<link rel="stylesheet" href="css/info.css?v=3">
+<style>
+
+</style>
+<body>
+<div class="bg-body"></div>
+<div id="App2">
+    <div class="top">
+        <div class="set">
+            <div @click="InfoBtn" style="cursor: pointer"><img src="img/logo.png" alt=""> {{$t('common.t1')}}</div>
+            <div class="lang">
+                <!--                <div class="langTab">{{$t('common.t2')}}</div>-->
+                <div class="hoves" @click="show3 =!show3" v-if="lang=='en'"><img src="img/en.svg"> English</div>
+                <div class="hoves" @click="show3 =!show3" v-if="lang=='zh'"><img src="img/zh.svg"> 中国</div>
+                <div class="hoves" @click="show3 =!show3" v-if="lang=='es'"><img src="img/eg.svg"> русский</div>
+                <div class="hoves" @click="show3 =!show3" v-if="lang=='ru'"><img src="img/hg.svg"> 한국어</div>
+                <ul class="langList" :class="{'activer':show3==1}">
+                    <li @click="tabLang('en')" v-if="lang !='en'"><img src="img/en.svg"> English</li>
+                    <li @click="tabLang('zh')" v-if="lang !='zh'"><img src="img/zh.svg"> 中国</li>
+                    <li @click="tabLang('es')" v-if="lang !='es'"><img src="img/eg.svg"> русский</li>
+                    <li @click="tabLang('ru')" v-if="lang !='ru'"><img src="img/hg.svg"> 한국어</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div class="com">
+        <div class="head">
+            <div><img src="img/logo.png" alt=""></div>
+            <div>G -Voyage</div>
+            <div class="SetTips">
+                <div class="g3">
+                    <div>
+                        <p><img src="img/5.png" alt=""></p>
+                        <p>
+                            <span>100%</span>
+                            <span>{{$t('common.t34')}}</span>
+                        </p>
+                    </div>
+                    <div>
+                        <p><img src="img/6.png" alt=""></p>
+                        <p>
+                            <span>100%</span>
+                            <span>{{$t('common.t35')}}</span>
+                        </p>
+                    </div>
+                    <div>
+                        <p><img src="img/7.png" alt=""></p>
+                        <p>
+                            <span>100%</span>
+                            <span> {{$t('common.t36')}}</span>
+                        </p>
+                    </div>
+                </div>
+                <!--                <p>{{$t('common.t28')}}</p>-->
+            </div>
+        </div>
+        <div class="info">{{$t('common.t3')}}</div>
+        <div class="information">
+
+            <div class="comment">
+                <div>
+                    <p>{{$t('common.t25')}}</p>
+                    <p>{{userInfo.spot}} TRX
+                    </p>
+                </div>
+                <div>
+                    <p>{{$t('common.t27')}}</p>
+                    <p>{{userInfo.bonus}} TRX
+                    </p>
+                </div>
+
+                <!--<div>
+                    <p>{{$t('common.t19')}}</p>
+                    <p>{{dynamicIncome}}{{$t('common.t20')}}
+                    </p>
+                </div>-->
+                <div>
+                    <p>{{$t('common.t5')}}</p>
+                    <p>{{userInfo.investAmount}} TRX</p>
+                </div>
+                <div class="rights" v-for="(item,index ) in userInfo.amountsList" v-if="item.hexs" :key="" index>
+                    {{item.hexs}}
+
+                    <div class="bg2">
+                        <img class="imgShow" src="img/1.png" :title="(item.dividendsIdx*100).toFixed(2)+'%'"/>
+                        <div :style="'background-size: '+(item.dividendsIdx/2.3)*100+'%  100%;'">
+
+                            {{(item.dividendsIdx * 100).toFixed(2)}}%
+
+                        </div>
+                    </div>
+                    <div class="setYl">
+                        <p>{{$t('common.t18')}}</p>
+                        <p>{{item.rate}}%
+                        </p>
+                    </div>
+                </div>
+
+
+            </div>
+        </div>
+        <div class="info">{{$t('common.t32')}}</div>
+        <div class="cumulativeIncome">
+            <div class="flx">
+                <div>
+                    <p>TRX</p>
+                    <p>{{personalAssets.assetBalanceTRX}}</p>
+                </div>
+                <div>
+                    <p>{{$t('common.t8')}}</p>
+                    <p>{{personalAssets.cumulativeIncomeMB}}</p>
+                </div>
+            </div>
+        </div>
+
+
+        <div class="info">{{$t('common.t33')}}</div>
+        <div class="cumulativeIncome cumulativeIncome2">
+            <div class="flx">
+                <div>
+                    <p>TRX</p>
+                    <p>{{personalAssets.cumulativeIncomeTRX}}</p>
+                </div>
+                <div>
+                    <p>{{$t('common.t8')}}</p>
+                    <p>{{personalAssets.assetBalanceMB}}</p>
+                </div>
+            </div>
+            <div class="btn" @click="deposit">{{$t('common.t10')}}</div>
+        </div>
+        <div class="info">{{$t('common.t11')}}</div>
+        <div class="team">
+            <div class="list">
+                <p>{{$t('common.t26')}}</p>
+                <p>{{team.directCount}} {{$t('common.t13')}} </p>
+            </div>
+            <div class="list">
+                <p>{{$t('common.t12')}}</p>
+                <p>{{team.teamCount}} {{$t('common.t13')}}<!-- <img @click="show2=1" src="img/3.png" alt="">--></p>
+            </div>
+            <div class="list">
+                <p>{{$t('common.t14')}}</p>
+                <p>{{team.teamInverst}} TRX <!--<img  @click="show=1" src="img/3.png" alt="">--></p>
+            </div>
+
+            <div class="list" v-if="tron.account">
+                <p>{{$t('common.t15')}}</p>
+                <p>{{myAddress2}}</p>
+            </div>
+            <div class="btn" v-if="tron.account" @click="copyText(myAddress)">{{$t('common.t16')}}</div>
+        </div>
+        <!--团队业绩-->
+        <div class="alertBack" @click.stop v-if="show">
+            <p class="close" @click="show=0">X</p>
+            <div class="alertList">
+                <p>钱包地址</p>
+                <p>代数</p>
+                <p>当前投资</p>
+            </div>
+            <div class="scList">
+                <ul>
+                    <li>
+                        <p>jgwdq09asx</p>
+                        <p>20代</p>
+                        <p>3000TRX</p>
+                    </li>
+                    <li>
+                        <p>jgwdq09asx</p>
+                        <p>20代</p>
+                        <p>3000TRX</p>
+                    </li>
+                    <li>
+                        <p>jgwdq09asx</p>
+                        <p>20代</p>
+                        <p>3000TRX</p>
+                    </li>
+                    <li>
+                        <p>jgwdq09asx</p>
+                        <p>20代</p>
+                        <p>3000TRX</p>
+                    </li>
+                    <li>
+                        <p>jgwdq09asx</p>
+                        <p>20代</p>
+                        <p>3000TRX</p>
+                    </li>
+                    <li>
+                        <p>jgwdq09asx</p>
+                        <p>20代</p>
+                        <p>3000TRX</p>
+                    </li>
+                    <li>
+                        <p>jgwdq09asx</p>
+                        <p>20代</p>
+                        <p>3000TRX</p>
+                    </li>
+
+                </ul>
+            </div>
+        </div>
+        <div class="alertBack" @click.stop v-if="show2">
+            <p class="close" @click="show2=0">X</p>
+            <div class="alertList alertList2">
+                <p>代数</p>
+                <p>人数</p>
+            </div>
+            <div class="scList scList2">
+                <ul>
+                    <li>
+                        <p>1代</p>
+                        <p>10人</p>
+                    </li>
+                    <li>
+                        <p>1代</p>
+                        <p>10人</p>
+                    </li>
+                    <li>
+                        <p>1代</p>
+                        <p>10人</p>
+                    </li>
+                    <li>
+                        <p>1代</p>
+                        <p>10人</p>
+                    </li>
+                    <li>
+                        <p>1代</p>
+                        <p>10人</p>
+                    </li>
+                    <li>
+                        <p>1代</p>
+                        <p>10人</p>
+                    </li>
+                    <li>
+                        <p>1代</p>
+                        <p>10人</p>
+                    </li>
+
+
+                </ul>
+            </div>
+        </div>
+
+    </div>
+    <div class="outShow" v-if="outShow ">
+        <p><img src="img/4.png" alt=""></p>
+        <div class="tips">{{$t('common.t21')}}</div>
+        <div class="msg">{{$t('common.t22')}}</div>
+        <div class="btns">
+            <div @click="outShow=0">{{$t('common.t23')}}</div>
+            <div @click="outBtn">{{$t('common.t24')}}</div>
+        </div>
+
+    </div>
+</div>
+</body>
+<script src="js/jquery.min.js"></script>
+<script src="js/vue.js"></script>
+<script src="js/vue-i18n.js"></script>
+<script src="js/odometer.min.js"></script>
+<script src="js/indexJq.js"></script>
+<script src="js/infoLang.js"></script>
+<script src="js/info.js"></script>
+<script>
+    $(function () {
+        var $html = $('html');
+        var size = $html.width() / 10 + "px";
+        $html.css("font-size", size);
+        $('#App2').addClass('m-show')
+    })
+</script>
+</html>
